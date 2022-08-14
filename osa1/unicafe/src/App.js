@@ -4,9 +4,9 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Statistics = ({ amount, text }) => (
+const Statistics = (props) => (
   <p>
-    {text} {amount}
+    {props.text} {props.amount}
   </p>
 );
 
