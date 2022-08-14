@@ -16,6 +16,23 @@ const App = () => {
   const [bad, setBad] = useState(0);
   const [sum, setSum] = useState(0);
 
+  const checkFeedbacks = () => {
+    if (sum === 0) {
+      return <p>No feedback given</p>;
+    } else {
+      return (
+        <>
+          <Statistics amount={good} text='good' />
+          <Statistics amount={neutral} text='neutral' />
+          <Statistics amount={bad} text='bad' />
+          <Statistics amount={sum} text='all' />
+          <Statistics amount={average([good, neutral, bad])} text='average' />
+          <Statistics amount={positives(good)} text='positive' />
+        </>
+      );
+    }
+  };
+
   const handleGood = () => {
     setGood(good + 1);
     setSum(sum + 1);
@@ -50,12 +67,7 @@ const App = () => {
       <Button handleClick={handleNeutral} text='neutral' />
       <Button handleClick={handleBad} text='bad' />
       <h1>statistics</h1>
-      <Statistics amount={good} text='good' />
-      <Statistics amount={neutral} text='neutral' />
-      <Statistics amount={bad} text='bad' />
-      <Statistics amount={sum} text='all' />
-      <Statistics amount={average([good, neutral, bad])} text='average' />
-      <Statistics amount={positives(good)} text='positive' />
+      {checkFeedbacks()}
     </div>
   );
 };
