@@ -1,5 +1,8 @@
+import Weather from './Weather';
+
 const Country = (props) => {
   let country = props.country;
+
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -12,6 +15,7 @@ const Country = (props) => {
         ))}
       </ul>
       <img src={Object.values(country.flags)[0]} alt='flag'></img>
+      <Weather country={country} />
     </div>
   );
 };

@@ -29,7 +29,12 @@ const Countries = (props) => {
         </ul>
       );
     } else if (filteredCountries.length === 1) {
-      return <Country country={filteredCountries[0]} />;
+      return (
+        <Country
+          handleCountryOpen={props.handleCountryOpen}
+          country={filteredCountries[0]}
+        />
+      );
     }
   };
 
