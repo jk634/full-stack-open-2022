@@ -1,12 +1,13 @@
 import Country from './Country';
+import ButtonShow from './ButtonShow';
 
 const Countries = (props) => {
-  let countries = props.countries;
+  let countries = props.country.length < 1 ? props.countries : props.country;
   let newFilter = props.newFilter;
 
   const filteredCountries = countries.filter(
     (country) =>
-      country.name.common.toUpperCase().startsWith(newFilter.toUpperCase()) ===
+      country.name.common.toUpperCase().includes(newFilter.toUpperCase()) ===
       true
   );
 
@@ -16,8 +17,14 @@ const Countries = (props) => {
     } else if (filteredCountries.length <= 10 && filteredCountries.length > 1) {
       return (
         <ul>
-          {filteredCountries.map((cntr) => (
-            <li key={cntr.flag}>{cntr.name.common}</li>
+          {filteredCountries.map((country) => (
+            <li key={country.flag}>
+              {country.name.common}{' '}
+              <ButtonShow
+                handleClick={() => props.handleClick(country)}
+                text='show'
+              />
+            </li>
           ))}
         </ul>
       );
