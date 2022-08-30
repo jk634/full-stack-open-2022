@@ -22,28 +22,40 @@ const App = () => {
 
   const addContent = (event) => {
     event.preventDefault();
+
     const nameObject = { name: newName, number: newNumber };
+    const contact = persons.find((res) => newName === res.name);
 
     const isSameName = persons.some((p) => (p.name === newName ? true : false));
 
     if (isSameName) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        contactsService.update(contact.id, nameObject).then((response) => {
+          setPersons(
+            persons.map((con) => (con.id !== response.id ? con : response))
+          );
+          setNewName('');
+          setNewNumber('');
+        });
+      }
     } else {
-      contactsService.create(nameObject).then(() => {
-        setPersons(persons.concat(nameObject));
+      contactsService.create(nameObject).then((response) => {
+        setPersons(persons.concat(response));
         setNewName('');
         setNewNumber('');
       });
     }
   };
 
-  const filteredToShow = newName
-    .toUpperCase()
-    .startsWith(newFilter.toUpperCase())
+  const filteredToShow = newName.toUpperCase().includes(newFilter.toUpperCase())
     ? persons
     : persons.filter(
         (person) =>
-          person.name.toUpperCase().startsWith(newFilter.toUpperCase()) === true
+          person.name.toUpperCase().includes(newFilter.toUpperCase()) === true
       );
 
   const deleteContact = (person) => {
