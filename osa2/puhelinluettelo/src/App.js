@@ -46,6 +46,15 @@ const App = () => {
           person.name.toUpperCase().startsWith(newFilter.toUpperCase()) === true
       );
 
+  const deleteContact = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      const contact = persons.find((con) => con.id === person.id);
+      contactsService.deleteSingleContact(contact.id).then(() => {
+        setPersons(persons.filter((per) => contact.id !== per.id));
+      });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -59,7 +68,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons filteredToShow={filteredToShow} />
+      <Persons filteredToShow={filteredToShow} deleteContact={deleteContact} />
     </div>
   );
 };
