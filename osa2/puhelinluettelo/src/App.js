@@ -3,12 +3,14 @@ import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
 import Persons from './components/Persons';
 import contactsService from './services/ContactsService';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [newFilter, setNewFilter] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     contactsService.getAll().then((response) => {
@@ -38,6 +40,10 @@ const App = () => {
           setPersons(
             persons.map((con) => (con.id !== response.id ? con : response))
           );
+          setMessage(`Changed number for ${contact.name}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 2000);
           setNewName('');
           setNewNumber('');
         });
@@ -45,6 +51,10 @@ const App = () => {
     } else {
       contactsService.create(nameObject).then((response) => {
         setPersons(persons.concat(response));
+        setMessage(`Added ${response.name}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 2000);
         setNewName('');
         setNewNumber('');
       });
@@ -63,6 +73,10 @@ const App = () => {
       const contact = persons.find((con) => con.id === person.id);
       contactsService.deleteSingleContact(contact.id).then(() => {
         setPersons(persons.filter((per) => contact.id !== per.id));
+        setMessage(`Deleted ${person.name}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 2000);
       });
     }
   };
@@ -70,6 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm
