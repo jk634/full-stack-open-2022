@@ -1,19 +1,13 @@
-const Notification = ({ message }) => {
-  //   const style = '.' + msgStyle;
-  console.log(message);
-
+const Notification = ({ message, msgStyle }) => {
+  let style = 'notification';
+  if (msgStyle !== null) {
+    style = msgStyle;
+  }
   if (message === null) {
-    console.log('HERE I AM');
-
     return null;
   }
 
-  return (
-    <div className='notification'>
-      {message}
-      <div>{console.log('not here')}</div>
-    </div>
-  );
+  return <div className={style}>{message}</div>;
 };
 
 export default Notification;

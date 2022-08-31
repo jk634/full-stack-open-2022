@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [newFilter, setNewFilter] = useState('');
   const [message, setMessage] = useState(null);
+  const [msgStyle, setMsgStyle] = useState(null);
 
   useEffect(() => {
     contactsService.getAll().then((response) => {
@@ -36,17 +37,32 @@ const App = () => {
           `${newName} is already added to phonebook, replace the old number with a new one?`
         )
       ) {
-        contactsService.update(contact.id, nameObject).then((response) => {
-          setPersons(
-            persons.map((con) => (con.id !== response.id ? con : response))
-          );
-          setMessage(`Changed number for ${contact.name}`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 2000);
-          setNewName('');
-          setNewNumber('');
-        });
+        contactsService
+          .update(contact.id, nameObject)
+          .then((response) => {
+            setPersons(
+              persons.map((con) => (con.id !== response.id ? con : response))
+            );
+            setMessage(`Changed number for ${contact.name}`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch((error) => {
+            setMessage(
+              `Information of ${contact.name} has already been removed from the server`
+            );
+            setMsgStyle('error');
+            setTimeout(() => {
+              setMessage(null);
+              setMsgStyle(null);
+              setPersons(persons.filter((per) => per.id !== contact.id));
+            }, 5000);
+
+            console.log(error);
+          });
       }
     } else {
       contactsService.create(nameObject).then((response) => {
@@ -54,7 +70,7 @@ const App = () => {
         setMessage(`Added ${response.name}`);
         setTimeout(() => {
           setMessage(null);
-        }, 2000);
+        }, 5000);
         setNewName('');
         setNewNumber('');
       });
@@ -76,7 +92,7 @@ const App = () => {
         setMessage(`Deleted ${person.name}`);
         setTimeout(() => {
           setMessage(null);
-        }, 2000);
+        }, 5000);
       });
     }
   };
@@ -84,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} msgStyle={msgStyle} />
       <Filter handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm
