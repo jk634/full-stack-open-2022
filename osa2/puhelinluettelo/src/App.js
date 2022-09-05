@@ -23,6 +23,16 @@ const App = () => {
   const handleNumberChange = (event) => setNewNumber(event.target.value);
   const handleFilterChange = (event) => setNewFilter(event.target.value);
 
+  const resetMsgAndStyle = () => {
+    setMessage(null);
+    setMsgStyle(null);
+  };
+
+  const resetNameAndNumber = () => {
+    setNewName('');
+    setNewNumber('');
+  };
+
   const addContent = (event) => {
     event.preventDefault();
 
@@ -47,8 +57,7 @@ const App = () => {
             setTimeout(() => {
               setMessage(null);
             }, 5000);
-            setNewName('');
-            setNewNumber('');
+            resetNameAndNumber();
           })
           .catch((error) => {
             setMessage(
@@ -56,8 +65,7 @@ const App = () => {
             );
             setMsgStyle('error');
             setTimeout(() => {
-              setMessage(null);
-              setMsgStyle(null);
+              resetMsgAndStyle();
               setPersons(persons.filter((per) => per.id !== contact.id));
             }, 5000);
 
@@ -73,14 +81,15 @@ const App = () => {
           setTimeout(() => {
             setMessage(null);
           }, 5000);
-          setNewName('');
-          setNewNumber('');
+          resetNameAndNumber();
         })
         .catch((error) => {
           setMessage(error.response.data.error);
+          setMsgStyle('error');
           setTimeout(() => {
-            setMessage(null);
+            resetMsgAndStyle();
           }, 5000);
+          resetNameAndNumber();
         });
     }
   };
