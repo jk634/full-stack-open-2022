@@ -65,15 +65,23 @@ const App = () => {
           });
       }
     } else {
-      contactsService.create(nameObject).then((response) => {
-        setPersons(persons.concat(response));
-        setMessage(`Added ${response.name}`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-        setNewName('');
-        setNewNumber('');
-      });
+      contactsService
+        .create(nameObject)
+        .then((response) => {
+          setPersons(persons.concat(response));
+          setMessage(`Added ${response.name}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        });
     }
   };
 
