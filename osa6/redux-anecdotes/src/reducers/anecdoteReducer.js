@@ -35,15 +35,26 @@ const reducer = (state = initialState, action) => {
       );
 
     case 'CREATE':
-      const newAnecdote = {
-        content: action.content,
-        id: getId(),
-        votes: 0,
-      };
-      return state.concat(newAnecdote);
+      return [...state, action.data];
     default:
       return state;
   }
+};
+
+export const voteAnecdote = (id) => {
+  console.log('vote', id);
+  return { type: 'VOTE', id: id };
+};
+
+export const createAnecdote = (content) => {
+  return {
+    type: 'CREATE',
+    data: {
+      content: content,
+      id: getId(),
+      votes: 0,
+    },
+  };
 };
 
 export default reducer;
