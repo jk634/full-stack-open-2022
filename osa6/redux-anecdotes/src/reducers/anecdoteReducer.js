@@ -33,6 +33,14 @@ const reducer = (state = initialState, action) => {
       return state.map((anec) =>
         anec.id !== action.id ? anec : changedAnecdote
       );
+
+    case 'CREATE':
+      const newAnecdote = {
+        content: action.content,
+        id: getId(),
+        votes: 0,
+      };
+      return state.concat(newAnecdote);
     default:
       return state;
   }
