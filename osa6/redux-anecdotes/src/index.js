@@ -7,8 +7,7 @@ import store from './store';
 console.log(store.getState());
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <div />
-  // <Provider store={store}>
-  //   <App />
-  // </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
