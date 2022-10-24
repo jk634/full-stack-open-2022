@@ -17,7 +17,6 @@ const AnecdoteList = () => {
 
   const vote = (id, content) => {
     console.log('vote', id);
-    console.log(content);
     dispatch(voteAnecdote(id));
 
     dispatch(addNotification(`you voted '${content}'`));
