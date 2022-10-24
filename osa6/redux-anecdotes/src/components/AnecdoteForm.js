@@ -5,8 +5,6 @@ import {
   removeNotification,
 } from '../reducers/notificationReducer';
 
-import anecdoteService from '../services/anecdotes';
-
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
 

@@ -15,10 +15,9 @@ const AnecdoteList = () => {
 
   const dispatch = useDispatch();
 
-  const vote = (id, content) => {
+  const vote = async (id, content) => {
     console.log('vote', id);
     dispatch(voteAnecdote(id));
-
     dispatch(addNotification(`you voted '${content}'`));
     setTimeout(() => {
       dispatch(removeNotification());

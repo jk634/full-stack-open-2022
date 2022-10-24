@@ -6,15 +6,9 @@ const reducer = (state = [], action) => {
 
   switch (action.type) {
     case 'VOTE':
-      const anecToChange = state.find((anec) => anec.id === action.id);
-      const changedAnecdote = {
-        ...anecToChange,
-        votes: anecToChange.votes + 1,
-      };
       return state.map((anec) =>
-        anec.id !== action.id ? anec : changedAnecdote
+        anec.id !== action.data.id ? anec : action.data
       );
-
     case 'CREATE':
       return [...state, action.data];
     case 'SET':
@@ -33,9 +27,9 @@ export const setAnecdotes = (content) => {
   };
 };
 
-export const voteAnecdote = (id) => {
-  console.log('vote', id);
-  return { type: 'VOTE', id: id };
+export const vote = (content) => {
+  console.log('vote', content.id);
+  return { type: 'VOTE', data: content };
 };
 
 export const appendAnecdote = (content) => {
@@ -56,6 +50,13 @@ export const createAnecdote = (content) => {
   return async (dispatch) => {
     const newAnecdote = await anecdoteService.createNew(content);
     dispatch(appendAnecdote(newAnecdote));
+  };
+};
+
+export const voteAnecdote = (id) => {
+  return async (dispatch) => {
+    const votedAnecdote = await anecdoteService.vote(id);
+    dispatch(vote(votedAnecdote));
   };
 };
 
