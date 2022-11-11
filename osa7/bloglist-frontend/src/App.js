@@ -1,17 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import NewBlog from './components/NewBlog';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+import { setNotification } from './reducers/notificationReducer';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
+
+  const dispatch = useDispatch();
+  const message = useSelector((state) => state.notification);
+  console.log(message);
 
   const newBlogRef = useRef();
 
@@ -31,11 +36,7 @@ const App = () => {
   }, []);
 
   const notify = (msg) => {
-    console.log(msg);
-    setMessage(msg);
-    setTimeout(() => {
-      setMessage(null);
-    }, 3000);
+    dispatch(setNotification(msg, 5));
   };
 
   const handleLogin = async (event) => {
